@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 760" role="img" aria-labelledby="title description">
+  <title id="title">Lee Junhyeok profile illustration</title>
+  <desc id="description">An abstract editorial graphic with an LJ monogram and Lee Junhyeok's name.</desc>
+  <rect width="640" height="760" fill="#d9d3c7" />
+  <path d="M0 0h640v278L0 528Z" fill="#155f52" />
+  <circle cx="495" cy="172" r="102" fill="#f0b64b" />
+  <circle cx="495" cy="172" r="64" fill="none" stroke="#18211d" stroke-width="2" />
+  <path d="M54 340h532M54 642h532" fill="none" stroke="#18211d" stroke-width="2" opacity=".28" />
+  <text x="48" y="570" fill="#18211d" font-family="Georgia, 'Times New Roman', serif" font-size="252" letter-spacing="-24">LJ</text>
+  <text x="54" y="690" fill="#18211d" font-family="Arial, sans-serif" font-size="24" font-weight="700" letter-spacing="5">LEE JUNHYEOK</text>
+  <text x="54" y="721" fill="#155f52" font-family="Arial, sans-serif" font-size="15" font-weight="700" letter-spacing="3">PRODUCT BUILDER · SEOUL</text>
+  <path d="M564 674v48h-48" fill="none" stroke="#18211d" stroke-width="2" />
+</svg>
