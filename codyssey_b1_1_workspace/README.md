@@ -1,0 +1,149 @@
+# Lee Junhyeok — Product Builder Portfolio
+
+경제학에서 출발해 사람들이 실제로 행동하는 방식을 중심으로 제품을 설계하는 Lee Junhyeok의 반응형 포트폴리오입니다. 핵심 자기소개 콘텐츠는 HTML에 정적으로 작성했고, GitHub 저장소 목록과 인터랙션 및 상태 변화만 JavaScript로 처리했습니다. 따라서 API 요청에 실패해도 소개, 학력, 작업 방식, 기술, 현재 프로젝트는 그대로 읽을 수 있습니다.
+
+- GitHub repository: https://github.com/Cerhovah/codyssey_mission_b1-1
+- GitHub Pages: 저장소의 Pages 배포 활성화 후 실제 URL을 기록합니다.
+
+## 사용 기술
+
+- HTML5
+- CSS3
+- Vanilla JavaScript
+- GitHub REST API
+- LocalStorage
+- Intersection Observer
+- Formspree HTTP endpoint
+- GitHub Pages
+
+이 목록은 포트폴리오 자체의 구현 기술입니다. 본문에 표시되는 React, React Native, Vite, Tailwind CSS 등은 Lee Junhyeok의 학습 기술입니다.
+
+## 폴더 구조
+
+```text
+/
+├── index.html
+├── css/
+│   └── style.css
+├── js/
+│   └── app.js
+├── images/
+│   ├── profile.svg
+│   ├── screenshot-desktop.png
+│   ├── screenshot-mobile.png
+│   └── screenshot-dark.png
+└── README.md
+```
+
+## 실행 방법
+
+1. VS Code에서 프로젝트 폴더를 엽니다.
+2. Live Server extension을 사용합니다.
+3. `index.html`에서 **Open with Live Server**를 실행합니다.
+4. browser에서 페이지를 확인합니다.
+
+별도의 package 설치나 build 과정은 없습니다.
+
+## 주요 기능
+
+- 375px부터 자연스럽게 확장되는 mobile-first 반응형 layout
+- 모바일 hamburger menu와 768px 이상 일반 navigation
+- navigation 및 CTA의 smooth scroll
+- 60px 스크롤 이후 navigation 배경 변화
+- 300px 스크롤 이후 Scroll Top button 표시
+- light/dark theme 전환, system theme 감지, LocalStorage 유지
+- threshold 0.2의 Intersection Observer scroll reveal
+- Hero 소개 문구 typing effect
+- GitHub repository loading/success/error/empty 상태와 Retry
+- API 결과에서 만든 language filter
+- Name, Email, Message의 submit/input 실시간 validation
+- 실제 endpoint가 없을 때 전송을 가장하지 않는 Formspree 준비 상태
+
+## 구조와 구현 선택
+
+### HTML / CSS / JavaScript 분리
+
+HTML은 콘텐츠 구조와 의미를 담당합니다. CSS는 표현, 색상, layout, responsive design을 담당합니다. JavaScript는 event, application state, API, DOM update를 담당합니다. 역할을 분리하면 한 영역을 수정할 때 다른 영역과 섞이는 정도를 줄이고 코드의 위치와 책임을 쉽게 찾을 수 있습니다.
+
+### Semantic HTML
+
+- `header`: 페이지 상단 영역
+- `nav`: 페이지의 주요 navigation
+- `main`: 페이지의 핵심 콘텐츠
+- `section`: About, Skills, Projects, Contact처럼 각각 하나의 주제를 갖는 영역
+- `article`: 하나만 분리해서 보아도 의미가 있는 project card와 content block
+- `footer`: 저작권과 실제 GitHub profile link를 담는 페이지 하단 정보
+
+### CSS variables와 theme
+
+색상, spacing, radius, shadow, font 값을 `:root` 변수로 정의했습니다. 같은 값을 여러 selector에 반복하지 않고 한 곳에서 관리할 수 있으며, dark mode에서는 component CSS를 다시 작성하는 대신 `[data-theme='dark']`의 variable 값만 교체할 수 있습니다. 저장값이 없을 때를 위해 `prefers-color-scheme: dark` media query도 제공합니다.
+
+### Flexbox와 Grid
+
+Flexbox는 한 축을 중심으로 Logo와 navigation을 배치하는 데 적합해 `.nav-container`에 사용했습니다. Grid는 여러 project card의 행과 열을 동시에 관리하면서 viewport에 따라 column 수를 자동 조절하기에 적합해 `.projects-grid`에 `auto-fit`과 `minmax()`를 사용했습니다.
+
+### Mobile-first
+
+작은 화면에 필요한 기본 layout을 먼저 정의하고 공간이 넓어질 때 기능과 layout을 확장하면 desktop CSS를 다시 제거하거나 덮어쓰는 규칙이 줄어듭니다. 기본 규칙은 mobile이며 `768px` tablet, `1024px` desktop breakpoint에서 확장합니다.
+
+### addEventListener
+
+HTML의 `onclick`은 markup과 JavaScript 행동을 같은 위치에 섞습니다. `addEventListener`를 사용하면 구조와 행동을 분리할 수 있고 동일 element에도 여러 event listener를 관리할 수 있습니다. 이 프로젝트의 click, input, submit event는 모두 `app.js`에서 연결합니다.
+
+## 상태 관리 방식
+
+`STATE`는 theme, mobile menu, API 상태, filter 상태, form validation 상태를 한 객체에 모읍니다. 이 값들은 하나의 변경이 여러 DOM 표현에 영향을 줍니다. 서로 관련 없는 전역 변수로 흩어 놓으면 현재 화면을 결정하는 값을 추적하기 어렵지만, `STATE`를 사용하면 **event handler → 상태 변경 → render 함수**의 데이터 흐름을 한 곳에서 따라가기 쉽습니다.
+
+이는 React state와 동일한 기술은 아니며, 상태 변화에 따라 UI를 다시 표현하는 사고방식을 Vanilla JavaScript로 연습하기 위한 구조입니다.
+
+| 흐름 | 상태 변경 | 화면 반영 |
+| --- | --- | --- |
+| Theme click | `STATE.theme` | `applyTheme()`이 `data-theme`과 button 상태 갱신 |
+| API request | `STATE.projects.status` | `renderProjects()`가 loading/success/error/empty 렌더링 |
+| Filter click | `STATE.projects.selectedLanguage` | `filter()` 후 repository cards 재렌더링 |
+| Form input/submit | `STATE.form.values`, `errors`, `submitStatus` | field error와 submit feedback 갱신 |
+
+DOM reference는 application state가 아니므로 `STATE`와 별도의 `DOM`, `FORM_FIELDS` 객체에 둡니다.
+
+## GitHub API 구조
+
+고정 사용자 `Cerhovah`의 public repositories를 GitHub REST API에서 가져옵니다.
+
+```text
+fetchProjects() 실행
+→ STATE.projects.status = loading
+→ renderProjects()
+→ await fetch()
+→ response.ok 확인
+→ 실패 상태이면 throw
+→ await response.json()
+→ success 또는 empty 상태 저장
+→ renderProjects()
+
+실패하면 catch
+→ STATE.projects.status = error
+→ renderProjects()
+→ error UI와 Retry button 표시
+```
+
+성공한 repository object 배열은 선택 language가 `All`이 아니면 `filter()`로 거릅니다. 이어서 `map()`으로 repository마다 HTML card를 만들고 `join('')`한 뒤 Projects container의 `innerHTML`로 렌더링합니다. 각 card 생성 시 object destructuring을 사용하며, 동적 문자열은 HTML escape 처리합니다. HTTP 403은 요청 한도 가능성을 알리는 error 상태로 표시합니다.
+
+## 기준값
+
+| 동작 | 값 |
+| --- | ---: |
+| Navigation style threshold | 60px |
+| Scroll Top threshold | 300px |
+| Intersection Observer threshold | 0.2 |
+| Tablet breakpoint | 768px |
+| Desktop breakpoint | 1024px |
+
+## Formspree 설정
+
+`js/app.js`의 `FORM_ENDPOINT` 상수에 발급받은 Formspree URL을 입력합니다. 기본 placeholder 상태에서는 validation 성공만 안내하고 실제 전송 성공 메시지를 표시하지 않습니다. 설정 후에는 `fetch()`로 전송하며 성공 시 field를 초기화하고, 실패 시 재시도 안내를 표시합니다.
+
+## Screenshots
+
+| Desktop · 1440px | Mobile · 375px | Dark mode · 1440px |
+| --- | --- | --- |
+| ![Desktop portfolio screenshot](images/screenshot-desktop.png) | ![Mobile portfolio screenshot](images/screenshot-mobile.png) | ![Dark mode portfolio screenshot](images/screenshot-dark.png) |
