@@ -3,7 +3,7 @@
 경제학에서 출발해 사람들이 실제로 행동하는 방식을 중심으로 제품을 설계하는 Lee Junhyeok의 반응형 포트폴리오입니다. 핵심 자기소개 콘텐츠는 HTML에 정적으로 작성했고, GitHub 저장소 목록과 인터랙션 및 상태 변화만 JavaScript로 처리했습니다. 따라서 API 요청에 실패해도 소개, 학력, 작업 방식, 기술, 현재 프로젝트는 그대로 읽을 수 있습니다.
 
 - GitHub repository: https://github.com/Cerhovah/codyssey_mission_b1-1
-- GitHub Pages: [포트폴리오 열기](https://cerhovah.github.io/codyssey_mission_b1-1/) — 저장소 Settings → Pages에서 **Source: GitHub Actions**를 한 번 활성화한 뒤 사용할 수 있습니다.
+- GitHub Pages: [포트폴리오 열기](https://cerhovah.github.io/codyssey_mission_b1-1/) — GitHub Actions로 배포 중
 
 ## 사용 기술
 
@@ -62,13 +62,13 @@ open http://localhost:8000
 
 ### README에서 온라인 페이지 열기
 
-README의 위쪽 **포트폴리오 열기** 링크를 클릭하면 GitHub Pages 주소로 이동합니다. Pages를 아직 활성화하지 않은 상태에서는 404가 나오며, 아래 배포 설정을 완료한 뒤 정상적으로 열립니다. README는 웹사이트를 직접 실행하는 문서가 아니라, 배포된 URL로 이동하거나 로컬 실행 명령을 안내하는 문서입니다.
+README의 위쪽 **포트폴리오 열기** 링크를 클릭하면 GitHub Pages 주소로 이동합니다. README는 웹사이트를 직접 실행하는 문서가 아니라, 배포된 URL로 이동하거나 로컬 실행 명령을 안내하는 문서입니다.
 
 ## GitHub Pages 배포
 
 이 저장소의 실제 웹 파일은 `codyssey_b1_1_workspace` 하위 폴더에 있습니다. GitHub Pages의 branch 방식은 저장소 root 또는 `docs` 폴더를 직접 대상으로 삼기 때문에, 하위 프로젝트 폴더를 그대로 배포하도록 `.github/workflows/pages.yml` workflow를 추가했습니다.
 
-GitHub에서 다음을 한 번만 설정합니다.
+GitHub에서 최초 한 번만 다음을 설정합니다.
 
 1. 저장소의 **Settings**를 엽니다.
 2. 왼쪽 메뉴 **Pages**를 선택합니다.
@@ -78,6 +78,15 @@ GitHub에서 다음을 한 번만 설정합니다.
 6. 배포가 끝나면 [https://cerhovah.github.io/codyssey_mission_b1-1/](https://cerhovah.github.io/codyssey_mission_b1-1/)에서 확인합니다.
 
 workflow는 `codyssey_b1_1_workspace`의 파일만 Pages artifact로 올리므로, 배포된 사이트의 루트에 `index.html`, `css/`, `js/`, `images/`가 바로 놓입니다. README 파일을 클릭한다고 로컬 서버가 켜지는 것은 아니며, 로컬 확인은 위의 `python3 -m http.server 8000` 명령을 사용합니다.
+
+## 최근 트러블슈팅 기록
+
+| 문제 | 원인 | 해결 |
+| --- | --- | --- |
+| Pages URL이 404를 표시함 | 실제 사이트 파일이 저장소 root가 아닌 `codyssey_b1_1_workspace`에 있었고 Pages source가 설정되지 않았음 | `pages.yml` workflow가 해당 폴더만 artifact로 배포하도록 구성하고 GitHub Actions source를 사용함 |
+| README에서 사이트를 바로 실행할 수 없음 | README는 명령을 실행하는 화면이 아니라 Markdown 문서임 | 온라인 Pages 링크와 `python3 -m http.server 8000` 로컬 실행 명령을 함께 제공함 |
+| 타이핑 효과가 잘 보이지 않음 | 한 글자당 24ms라 약 2초 안에 끝났음 | 320ms 뒤 시작하고 한 글자당 42ms로 조정함. 움직임 줄이기 설정에서는 완성 문장을 바로 표시하는 것이 정상임 |
+| 문의 폼이 설정 안내만 표시함 | Formspree endpoint가 placeholder 상태였음 | endpoint를 `app.js`에 설정함. 실제 수신 확인은 배포 후 테스트 전송으로 진행함 |
 
 ## 주요 기능
 
@@ -175,7 +184,7 @@ fetchProjects() 실행
 
 ## Formspree 설정
 
-현재 문의 폼은 입력값 검증과 비동기 전송 코드까지 구현되어 있습니다. 실제 메일 수신을 활성화하려면 Formspree에서 이 포트폴리오 전용 form을 만든 뒤 endpoint를 한 번 입력해야 합니다.
+현재 문의 폼은 입력값 검증과 비동기 전송 코드까지 구현되어 있으며, Formspree endpoint가 설정되어 있습니다. 실제 수신 여부는 배포 후 test message를 보내 Formspree Dashboard와 수신 이메일에서 확인합니다.
 
 1. [Formspree](https://formspree.io/)에 로그인하거나 가입합니다.
 2. Dashboard에서 **New Form**을 만들고 수신할 이메일 주소를 설정합니다.
@@ -192,10 +201,10 @@ fetchProjects() 실행
    const FORM_ENDPOINT = 'https://formspree.io/f/abcdwxyz';
    ```
 
-5. 로컬 서버를 다시 실행해 Name, Email, Message를 입력하고 전송을 테스트합니다.
-6. 실제 수신이 확인된 뒤 변경 사항을 commit과 push합니다.
+5. 로컬 서버 또는 GitHub Pages에서 Name, Email, Message를 입력하고 전송을 테스트합니다.
+6. Formspree Dashboard와 수신 이메일에서 실제 수신을 확인합니다.
 
-endpoint는 브라우저에서 form을 전송하기 위해 공개되어도 되는 주소이며, Formspree 계정 비밀번호나 API secret을 코드에 넣으면 안 됩니다. placeholder 상태에서는 validation 성공만 안내하고 실제 전송 성공 메시지를 표시하지 않습니다. endpoint가 설정되면 기존 `fetch()` 코드가 `FormData`와 `Accept: application/json` header로 전송하며, 성공 시 form을 초기화하고 실패 시 재시도 안내를 표시합니다.
+endpoint는 브라우저에서 form을 전송하기 위해 공개되어도 되는 주소이며, Formspree 계정 비밀번호나 API secret을 코드에 넣으면 안 됩니다. endpoint가 설정되면 기존 `fetch()` 코드가 `FormData`와 `Accept: application/json` header로 전송하며, 성공 시 form을 초기화하고 실패 시 재시도 안내를 표시합니다.
 
 타이핑 효과는 Hero 문구가 약 320ms 뒤부터 한 글자당 42ms로 나타나도록 구성했습니다. 운영체제 또는 브라우저에서 **움직임 줄이기**를 켠 사용자는 `prefers-reduced-motion` 설정에 따라 타이핑 효과 대신 완성된 문장을 바로 보게 됩니다.
 

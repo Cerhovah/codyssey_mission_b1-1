@@ -1,6 +1,6 @@
 const GITHUB_USERNAME = 'Cerhovah';
 const GITHUB_API_URL = `https://api.github.com/users/${GITHUB_USERNAME}/repos`;
-const FORM_ENDPOINT = 'YOUR_FORMSPREE_ENDPOINT';
+const FORM_ENDPOINT = 'https://formspree.io/f/mvkowndo';
 
 const NAV_SCROLL_THRESHOLD = 60;
 const SCROLL_TOP_THRESHOLD = 300;
