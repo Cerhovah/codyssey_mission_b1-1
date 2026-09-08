@@ -3,7 +3,7 @@
 경제학에서 출발해 사람들이 실제로 행동하는 방식을 중심으로 제품을 설계하는 Lee Junhyeok의 반응형 포트폴리오입니다. 핵심 자기소개 콘텐츠는 HTML에 정적으로 작성했고, GitHub 저장소 목록과 인터랙션 및 상태 변화만 JavaScript로 처리했습니다. 따라서 API 요청에 실패해도 소개, 학력, 작업 방식, 기술, 현재 프로젝트는 그대로 읽을 수 있습니다.
 
 - GitHub repository: https://github.com/Cerhovah/codyssey_mission_b1-1
-- GitHub Pages: 저장소의 Pages 배포 활성화 후 실제 URL을 기록합니다.
+- GitHub Pages: [포트폴리오 열기](https://cerhovah.github.io/codyssey_mission_b1-1/) — 저장소 Settings → Pages에서 **Source: GitHub Actions**를 한 번 활성화한 뒤 사용할 수 있습니다.
 
 ## 사용 기술
 
@@ -37,12 +37,47 @@
 
 ## 실행 방법
 
-1. VS Code에서 프로젝트 폴더를 엽니다.
-2. Live Server extension을 사용합니다.
-3. `index.html`에서 **Open with Live Server**를 실행합니다.
-4. browser에서 페이지를 확인합니다.
+### 터미널에서 실행하는 방법
 
-별도의 package 설치나 build 과정은 없습니다.
+프로젝트 루트(`codyssey_mission_b1-1`)에서 다음 명령을 실행합니다.
+
+```bash
+cd codyssey_b1_1_workspace
+python3 -m http.server 8000
+```
+
+서버가 실행되면 브라우저에서 [http://localhost:8000](http://localhost:8000)을 엽니다. macOS 터미널에서는 다음 명령으로 바로 열 수도 있습니다.
+
+```bash
+open http://localhost:8000
+```
+
+실행을 멈추려면 터미널에서 `Ctrl + C`를 누릅니다. 이 프로젝트는 빌드 도구나 package 설치가 필요 없는 정적 사이트이지만, `index.html`을 파일 탐색기에서 직접 여는 것보다 로컬 HTTP 서버를 사용하는 편이 GitHub API 요청과 실제 배포 환경을 더 정확하게 확인할 수 있습니다.
+
+### VS Code에서 실행하는 방법
+
+1. `codyssey_b1_1_workspace` 폴더를 VS Code로 엽니다.
+2. Live Server 확장을 설치합니다.
+3. `index.html`에서 **Open with Live Server**를 선택합니다.
+
+### README에서 온라인 페이지 열기
+
+README의 위쪽 **포트폴리오 열기** 링크를 클릭하면 GitHub Pages 주소로 이동합니다. Pages를 아직 활성화하지 않은 상태에서는 404가 나오며, 아래 배포 설정을 완료한 뒤 정상적으로 열립니다. README는 웹사이트를 직접 실행하는 문서가 아니라, 배포된 URL로 이동하거나 로컬 실행 명령을 안내하는 문서입니다.
+
+## GitHub Pages 배포
+
+이 저장소의 실제 웹 파일은 `codyssey_b1_1_workspace` 하위 폴더에 있습니다. GitHub Pages의 branch 방식은 저장소 root 또는 `docs` 폴더를 직접 대상으로 삼기 때문에, 하위 프로젝트 폴더를 그대로 배포하도록 `.github/workflows/pages.yml` workflow를 추가했습니다.
+
+GitHub에서 다음을 한 번만 설정합니다.
+
+1. 저장소의 **Settings**를 엽니다.
+2. 왼쪽 메뉴 **Pages**를 선택합니다.
+3. **Build and deployment → Source**에서 **GitHub Actions**를 선택합니다.
+4. **Actions** 탭에서 `Deploy portfolio to GitHub Pages` workflow를 확인합니다.
+5. `main`에 push되면 자동 배포됩니다. 필요하면 **Run workflow**로 수동 실행합니다.
+6. 배포가 끝나면 [https://cerhovah.github.io/codyssey_mission_b1-1/](https://cerhovah.github.io/codyssey_mission_b1-1/)에서 확인합니다.
+
+workflow는 `codyssey_b1_1_workspace`의 파일만 Pages artifact로 올리므로, 배포된 사이트의 루트에 `index.html`, `css/`, `js/`, `images/`가 바로 놓입니다. README 파일을 클릭한다고 로컬 서버가 켜지는 것은 아니며, 로컬 확인은 위의 `python3 -m http.server 8000` 명령을 사용합니다.
 
 ## 주요 기능
 
