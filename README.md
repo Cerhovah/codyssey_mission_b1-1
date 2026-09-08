@@ -42,7 +42,6 @@
 프로젝트 루트(`codyssey_mission_b1-1`)에서 다음 명령을 실행합니다.
 
 ```bash
-cd codyssey_b1_1_workspace
 python3 -m http.server 8000
 ```
 
@@ -56,7 +55,7 @@ open http://localhost:8000
 
 ### VS Code에서 실행하는 방법
 
-1. `codyssey_b1_1_workspace` 폴더를 VS Code로 엽니다.
+1. 저장소 루트 폴더를 VS Code로 엽니다.
 2. Live Server 확장을 설치합니다.
 3. `index.html`에서 **Open with Live Server**를 선택합니다.
 
@@ -66,7 +65,7 @@ README의 위쪽 **포트폴리오 열기** 링크를 클릭하면 GitHub Pages 
 
 ## GitHub Pages 배포
 
-이 저장소의 실제 웹 파일은 `codyssey_b1_1_workspace` 하위 폴더에 있습니다. GitHub Pages의 branch 방식은 저장소 root 또는 `docs` 폴더를 직접 대상으로 삼기 때문에, 하위 프로젝트 폴더를 그대로 배포하도록 `.github/workflows/pages.yml` workflow를 추가했습니다.
+이 저장소의 실제 웹 파일은 저장소 root에 있습니다. `.github/workflows/pages.yml` workflow는 root의 `index.html`, `css/`, `js/`, `images/`만 Pages artifact로 구성해 배포합니다.
 
 GitHub에서 최초 한 번만 다음을 설정합니다.
 
@@ -77,13 +76,13 @@ GitHub에서 최초 한 번만 다음을 설정합니다.
 5. `main`에 push되면 자동 배포됩니다. 필요하면 **Run workflow**로 수동 실행합니다.
 6. 배포가 끝나면 [https://cerhovah.github.io/codyssey_mission_b1-1/](https://cerhovah.github.io/codyssey_mission_b1-1/)에서 확인합니다.
 
-workflow는 `codyssey_b1_1_workspace`의 파일만 Pages artifact로 올리므로, 배포된 사이트의 루트에 `index.html`, `css/`, `js/`, `images/`가 바로 놓입니다. README 파일을 클릭한다고 로컬 서버가 켜지는 것은 아니며, 로컬 확인은 위의 `python3 -m http.server 8000` 명령을 사용합니다.
+workflow는 root의 웹 파일만 Pages artifact로 올리므로, 배포된 사이트의 루트에 `index.html`, `css/`, `js/`, `images/`가 바로 놓입니다. README 파일을 클릭한다고 로컬 서버가 켜지는 것은 아니며, 로컬 확인은 위의 `python3 -m http.server 8000` 명령을 사용합니다.
 
 ## 최근 트러블슈팅 기록
 
 | 문제 | 원인 | 해결 |
 | --- | --- | --- |
-| Pages URL이 404를 표시함 | 실제 사이트 파일이 저장소 root가 아닌 `codyssey_b1_1_workspace`에 있었고 Pages source가 설정되지 않았음 | `pages.yml` workflow가 해당 폴더만 artifact로 배포하도록 구성하고 GitHub Actions source를 사용함 |
+| Pages URL이 404를 표시함 | 실제 사이트 파일이 하위 폴더에 있었고 Pages source가 설정되지 않았음 | 웹 파일을 저장소 root로 옮기고 `pages.yml` workflow가 root의 정적 파일을 artifact로 배포하도록 구성함 |
 | README에서 사이트를 바로 실행할 수 없음 | README는 명령을 실행하는 화면이 아니라 Markdown 문서임 | 온라인 Pages 링크와 `python3 -m http.server 8000` 로컬 실행 명령을 함께 제공함 |
 | 타이핑 효과가 잘 보이지 않음 | 한 글자당 24ms라 약 2초 안에 끝났음 | 320ms 뒤 시작하고 한 글자당 42ms로 조정함. 움직임 줄이기 설정에서는 완성 문장을 바로 표시하는 것이 정상임 |
 | 문의 폼이 설정 안내만 표시함 | Formspree endpoint가 placeholder 상태였음 | endpoint를 `app.js`에 설정함. 실제 수신 확인은 배포 후 테스트 전송으로 진행함 |

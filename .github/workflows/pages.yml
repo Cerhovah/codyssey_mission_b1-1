@@ -27,10 +27,16 @@ jobs:
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
+      - name: Stage portfolio artifact
+        run: |
+          mkdir _site
+          cp index.html _site/
+          cp -R css js images _site/
+
       - name: Upload portfolio artifact
         uses: actions/upload-pages-artifact@v4
         with:
-          path: codyssey_b1_1_workspace
+          path: _site
 
       - name: Deploy to GitHub Pages
         id: deployment
