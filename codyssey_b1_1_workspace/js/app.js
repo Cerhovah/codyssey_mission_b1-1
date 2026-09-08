@@ -5,6 +5,8 @@ const FORM_ENDPOINT = 'YOUR_FORMSPREE_ENDPOINT';
 const NAV_SCROLL_THRESHOLD = 60;
 const SCROLL_TOP_THRESHOLD = 300;
 const OBSERVER_THRESHOLD = 0.2;
+const TYPING_START_DELAY = 320;
+const TYPING_INTERVAL = 42;
 const THEME_STORAGE_KEY = 'portfolio-theme';
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -181,19 +183,21 @@ const startTypingEffect = () => {
     return;
   }
 
-  let characterIndex = 0;
-  DOM.typingTarget.textContent = '';
-  DOM.typingTarget.classList.add('is-typing');
+  window.setTimeout(() => {
+    let characterIndex = 0;
+    DOM.typingTarget.textContent = '';
+    DOM.typingTarget.classList.add('is-typing');
 
-  const typingTimer = window.setInterval(() => {
-    characterIndex += 1;
-    DOM.typingTarget.textContent = sentence.slice(0, characterIndex);
+    const typingTimer = window.setInterval(() => {
+      characterIndex += 1;
+      DOM.typingTarget.textContent = sentence.slice(0, characterIndex);
 
-    if (characterIndex >= sentence.length) {
-      window.clearInterval(typingTimer);
-      DOM.typingTarget.classList.remove('is-typing');
-    }
-  }, 24);
+      if (characterIndex >= sentence.length) {
+        window.clearInterval(typingTimer);
+        DOM.typingTarget.classList.remove('is-typing');
+      }
+    }, TYPING_INTERVAL);
+  }, TYPING_START_DELAY);
 };
 
 const escapeHtml = (value) =>

@@ -175,7 +175,29 @@ fetchProjects() 실행
 
 ## Formspree 설정
 
-`js/app.js`의 `FORM_ENDPOINT` 상수에 발급받은 Formspree URL을 입력합니다. 기본 placeholder 상태에서는 validation 성공만 안내하고 실제 전송 성공 메시지를 표시하지 않습니다. 설정 후에는 `fetch()`로 전송하며 성공 시 field를 초기화하고, 실패 시 재시도 안내를 표시합니다.
+현재 문의 폼은 입력값 검증과 비동기 전송 코드까지 구현되어 있습니다. 실제 메일 수신을 활성화하려면 Formspree에서 이 포트폴리오 전용 form을 만든 뒤 endpoint를 한 번 입력해야 합니다.
+
+1. [Formspree](https://formspree.io/)에 로그인하거나 가입합니다.
+2. Dashboard에서 **New Form**을 만들고 수신할 이메일 주소를 설정합니다.
+3. 발급된 endpoint(`https://formspree.io/f/폼_ID` 형태)를 복사합니다.
+4. `js/app.js` 첫 부분의 다음 값을 endpoint로 교체합니다.
+
+   ```js
+   const FORM_ENDPOINT = 'YOUR_FORMSPREE_ENDPOINT';
+   ```
+
+   예를 들어 endpoint가 `https://formspree.io/f/abcdwxyz`라면 다음과 같이 작성합니다.
+
+   ```js
+   const FORM_ENDPOINT = 'https://formspree.io/f/abcdwxyz';
+   ```
+
+5. 로컬 서버를 다시 실행해 Name, Email, Message를 입력하고 전송을 테스트합니다.
+6. 실제 수신이 확인된 뒤 변경 사항을 commit과 push합니다.
+
+endpoint는 브라우저에서 form을 전송하기 위해 공개되어도 되는 주소이며, Formspree 계정 비밀번호나 API secret을 코드에 넣으면 안 됩니다. placeholder 상태에서는 validation 성공만 안내하고 실제 전송 성공 메시지를 표시하지 않습니다. endpoint가 설정되면 기존 `fetch()` 코드가 `FormData`와 `Accept: application/json` header로 전송하며, 성공 시 form을 초기화하고 실패 시 재시도 안내를 표시합니다.
+
+타이핑 효과는 Hero 문구가 약 320ms 뒤부터 한 글자당 42ms로 나타나도록 구성했습니다. 운영체제 또는 브라우저에서 **움직임 줄이기**를 켠 사용자는 `prefers-reduced-motion` 설정에 따라 타이핑 효과 대신 완성된 문장을 바로 보게 됩니다.
 
 ## Screenshots
 
